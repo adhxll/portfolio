@@ -1,0 +1,653 @@
+  :root {
+    --ink: #0a0a0c;
+    --parchment: #f0eff0;
+    --silver: #c8cdd6;
+    --steel: #8b939e;
+    --cold-white: #e8eaf0;
+    --circuit: #3a4a5c;
+    --glass: rgba(200,205,214,0.08);
+    --glass-border: rgba(200,205,214,0.18);
+    --accent: #a8b4c8;
+    --dim: #1c1e24;
+    --mid: #2a2d35;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { 
+    scroll-behavior: smooth; 
+}
+
+  body {
+    background: var(--ink);
+    color: var(--cold-white);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 20px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.45;
+  }
+
+  /* ─── CIRCUIT GRID BACKGROUND ─── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(168,180,200,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168,180,200,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    background: linear-gradient(180deg, rgba(10,10,12,0.97) 0%, rgba(10,10,12,0) 100%);
+    backdrop-filter: blur(4px);
+  }
+
+  nav::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass-border), var(--silver), var(--glass-border), transparent);
+  }
+
+  .nav-wordmark {
+    font-family: 'Romanesco', serif;
+    font-size: 1.1rem;
+    color: var(--silver);
+    letter-spacing: 0.05em;
+    padding: 1.2rem 2rem;
+    text-decoration: none;
+    opacity: 0.7;
+  }
+
+  .nav-divider {
+    color: var(--steel);
+    opacity: 0.4;
+    font-size: 0.6rem;
+    padding: 0 0.2rem;
+    user-select: none;
+  }
+
+  .nav-link {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--steel);
+    text-decoration: none;
+    padding: 1.5rem 1.4rem;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 1rem; left: 50%; right: 50%;
+    height: 1px;
+    background: var(--silver);
+    transition: left 0.3s ease, right 0.3s ease;
+  }
+
+  .nav-link:hover { 
+    color: var(--cold-white); 
+}
+  .nav-link:hover::after { 
+    left: 1.4rem; right: 1.4rem; 
+}
+
+  /* ─── SECTIONS ─── */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 120px 40px 80px;
+  }
+
+  section:first-of-type { padding-top: 160px; }
+
+  /* ─── HERO / ABOUT ─── */
+  #about {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 140px;
+    padding-bottom: 100px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+  }
+
+  .hero-eyebrow span {
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--steel);
+    vertical-align: middle;
+    margin-right: 0.8em;
+    opacity: 0.6;
+  }
+
+  .hero-name {
+    font-family: 'Romanesco', serif;
+    font-size: clamp(3.2rem, 8vw, 6rem);
+    color: var(--cold-white);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.3em;
+    text-shadow: 0 0 40px rgba(200,205,214,0.12);
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.75rem, 2vw, 0.95rem);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--silver);
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+  }
+
+  .hero-title .sep { 
+    color: var(--steel); 
+    margin: 0 0.6em; 
+    opacity: 0.5; 
+}
+
+  .hero-bio {
+    font-size: 1.05rem;
+    color: var(--silver);
+    font-style: italic;
+    font-weight: 300;
+    max-width: 520px;
+    line-height: 1.9;
+    margin-bottom: 1rem;
+  }
+
+  /* Info grid */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    margin-top: 3rem;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-border);
+  }
+
+  .info-cell {
+    background: var(--ink);
+    padding: 1.4rem 1.6rem;
+    transition: background 0.3s ease;
+  }
+
+  .info-cell:hover { 
+    background: var(--dim); 
+}
+
+  .info-cell-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .info-cell-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--cold-white);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  /* Skills row */
+  .skills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .skill-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--steel);
+    border: 1px solid var(--glass-border);
+    padding: 0.35rem 0.8rem;
+    transition: border-color 0.3s, color 0.3s;
+  }
+
+  .skill-tag:hover {
+    border-color: var(--silver);
+    color: var(--cold-white);
+  }
+
+  /* Awards */
+  .awards-list {
+    list-style: none;
+  }
+
+  .awards-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: 0.98rem;
+    color: var(--silver);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .awards-list li::before {
+    content: '✦';
+    color: var(--steel);
+    font-style: normal;
+    font-size: 0.6rem;
+    flex-shrink: 0;
+    margin-top: 0.35rem;
+  }
+
+  /* ─── DAGGER DIVIDER ─── */
+  .dagger-divider {
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 10px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.35;
+  }
+
+  .dagger-divider::before,
+  .dagger-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--silver));
+  }
+
+  .dagger-divider::after {
+    background: linear-gradient(90deg, var(--silver), transparent);
+  }
+
+  .dagger-glyph {
+    font-size: 1.5rem;
+    color: var(--silver);
+    user-select: none;
+    transform: rotate(180deg);
+    display: inline-block;
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--steel);
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Romanesco', serif;
+    font-size: clamp(2.1rem, 5vw, 3.3rem);
+    color: var(--cold-white);
+    line-height: 1;
+  }
+
+  /* ─── BLOG SECTION ─── */
+  #blog { padding-bottom: 100px; }
+
+  .blog-card {
+    display: block;
+    border: 1px solid var(--glass-border);
+    padding: 2rem 2.5rem;
+    margin-bottom: 1px;
+    text-decoration: none;
+    background: transparent;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blog-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(168,180,200,0.04), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .blog-card:hover {
+    background: var(--dim);
+    border-color: rgba(200,205,214,0.3);
+  }
+
+  .blog-card:hover::before { opacity: 1; }
+
+  .blog-card-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .blog-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    color: var(--cold-white);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .blog-card-desc {
+    font-size: 0.975rem;
+    color: var(--steel);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .blog-card-arrow {
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--steel);
+    opacity: 0;
+    transition: opacity 0.3s ease, right 0.3s ease;
+  }
+
+  .blog-card:hover .blog-card-arrow {
+    opacity: 1;
+    right: 2rem;
+  }
+
+  .blog-cta {
+    margin-top: 2rem;
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--steel);
+    text-decoration: none;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .blog-cta:hover { color: var(--cold-white); border-color: var(--silver); }
+
+  /* ─── PROJECTS ─── */
+  #projects { padding-bottom: 120px; }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1px;
+    background: var(--glass-border);
+    border: 1px solid var(--glass-border);
+  }
+
+  .project-card {
+    background: var(--ink);
+    padding: 2rem;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(180deg, var(--silver), transparent);
+    transition: height 0.4s ease;
+  }
+
+  .project-card:hover { 
+    background: var(--dim); 
+}
+  .project-card:hover::after { 
+    height: 100%; 
+}
+
+  .project-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--steel);
+    border: 1px solid var(--glass-border);
+    padding: 0.2rem 0.5rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .project-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    color: var(--cold-white);
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+
+  .project-desc {
+    font-size: 0.95rem;
+    color: var(--steel);
+    line-height: 1.65;
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+  }
+
+  .tech-dot {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--circuit);
+    color: #5a6878;
+  }
+
+  .tech-dot + .tech-dot::before {
+    content: ' · ';
+    color: var(--steel);
+    opacity: 0.4;
+  }
+
+  /* ─── EXPERIENCE TIMELINE ─── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.6rem; bottom: 0.6rem;
+    width: 1px;
+    background: linear-gradient(180deg, var(--silver), transparent);
+    opacity: 0.25;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.6rem;
+    width: 5px; height: 5px;
+    border: 1px solid var(--steel);
+    background: var(--ink);
+    transform: rotate(45deg);
+  }
+
+  .timeline-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--steel);
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-role {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--cold-white);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .timeline-org {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--silver);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-desc {
+    font-size: 0.95rem;
+    color: var(--steel);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 3rem 2rem 4rem;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  .footer-name {
+    font-family: 'Romanesco', serif;
+    font-size: 1.5rem;
+    color: var(--cold-whitel);
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-link {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cold-white);
+    text-decoration: none;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+
+  .footer-link:hover { 
+    opacity: 1; 
+}
+
+  /* ─── FADE-IN ANIMATION ─── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    section { padding: 100px 24px 60px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    nav { gap: 0; }
+    .nav-link { padding: 1.2rem 0.8rem; font-size: 0.68rem; }
+    .nav-wordmark { display: none; }
+    .nav-divider { display: none; }
+    .info-grid { grid-template-columns: 1fr 1fr; }
+    .blog-card { padding: 1.5rem; }
+    .blog-card-arrow { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }

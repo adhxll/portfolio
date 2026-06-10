@@ -7,679 +7,37 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"/>
-<style>
-  :root {
-    --ink: #0a0a0c;
-    --parchment: #f0eff0;
-    --silver: #c8cdd6;
-    --steel: #8b939e;
-    --cold-white: #e8eaf0;
-    --circuit: #3a4a5c;
-    --glass: rgba(200,205,214,0.08);
-    --glass-border: rgba(200,205,214,0.18);
-    --accent: #a8b4c8;
-    --dim: #1c1e24;
-    --mid: #2a2d35;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--ink);
-    color: var(--cold-white);
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 18px;
-    line-height: 1.7;
-    overflow-x: hidden;
-    cursor: crosshair;
-  }
-
-  /* ─── NOISE TEXTURE OVERLAY ─── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    background-size: 256px 256px;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.45;
-  }
-
-  /* ─── CIRCUIT GRID BACKGROUND ─── */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(168,180,200,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(168,180,200,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    padding: 0;
-    background: linear-gradient(180deg, rgba(10,10,12,0.97) 0%, rgba(10,10,12,0) 100%);
-    backdrop-filter: blur(4px);
-  }
-
-  nav::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 10%; right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--glass-border), var(--silver), var(--glass-border), transparent);
-  }
-
-  .nav-wordmark {
-    font-family: 'UnifrakturMaguntia', serif;
-    font-size: 1.1rem;
-    color: var(--silver);
-    letter-spacing: 0.05em;
-    padding: 1.2rem 2rem;
-    text-decoration: none;
-    opacity: 0.7;
-  }
-
-  .nav-divider {
-    color: var(--steel);
-    opacity: 0.4;
-    font-size: 0.6rem;
-    padding: 0 0.2rem;
-    user-select: none;
-  }
-
-  .nav-link {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--steel);
-    text-decoration: none;
-    padding: 1.5rem 1.4rem;
-    transition: color 0.3s ease;
-    position: relative;
-  }
-
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 1rem; left: 50%; right: 50%;
-    height: 1px;
-    background: var(--silver);
-    transition: left 0.3s ease, right 0.3s ease;
-  }
-
-  .nav-link:hover { color: var(--cold-white); }
-  .nav-link:hover::after { left: 1.4rem; right: 1.4rem; }
-
-  /* ─── SECTIONS ─── */
-  section {
-    position: relative;
-    z-index: 1;
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 120px 40px 80px;
-  }
-
-  section:first-of-type { padding-top: 160px; }
-
-  /* ─── HERO / ABOUT ─── */
-  #about {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-top: 140px;
-    padding-bottom: 100px;
-  }
-
-  .hero-eyebrow {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--steel);
-    margin-bottom: 1.5rem;
-    opacity: 0.8;
-  }
-
-  .hero-eyebrow span {
-    display: inline-block;
-    width: 24px;
-    height: 1px;
-    background: var(--steel);
-    vertical-align: middle;
-    margin-right: 0.8em;
-    opacity: 0.6;
-  }
-
-  .hero-name {
-    font-family: 'UnifrakturMaguntia', serif;
-    font-size: clamp(3.2rem, 8vw, 6rem);
-    color: var(--cold-white);
-    line-height: 1;
-    letter-spacing: 0.02em;
-    margin-bottom: 0.3em;
-    text-shadow: 0 0 40px rgba(200,205,214,0.12);
-  }
-
-  .hero-title {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(0.75rem, 2vw, 0.95rem);
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--silver);
-    margin-bottom: 2.5rem;
-    font-weight: 400;
-  }
-
-  .hero-title .sep { color: var(--steel); margin: 0 0.6em; opacity: 0.5; }
-
-  .hero-bio {
-    font-size: 1.05rem;
-    color: var(--silver);
-    font-style: italic;
-    font-weight: 300;
-    max-width: 520px;
-    line-height: 1.9;
-    margin-bottom: 3rem;
-  }
-
-  /* Info grid */
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1px;
-    margin-top: 3rem;
-    border: 1px solid var(--glass-border);
-    background: var(--glass-border);
-  }
-
-  .info-cell {
-    background: var(--ink);
-    padding: 1.4rem 1.6rem;
-    transition: background 0.3s ease;
-  }
-
-  .info-cell:hover { background: var(--dim); }
-
-  .info-cell-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--steel);
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-
-  .info-cell-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.95rem;
-    color: var(--cold-white);
-    font-weight: 400;
-    line-height: 1.5;
-  }
-
-  /* Skills row */
-  .skills-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 2.5rem;
-  }
-
-  .skill-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--steel);
-    border: 1px solid var(--glass-border);
-    padding: 0.35rem 0.8rem;
-    transition: border-color 0.3s, color 0.3s;
-  }
-
-  .skill-tag:hover {
-    border-color: var(--silver);
-    color: var(--cold-white);
-  }
-
-  /* Awards */
-  .awards-list {
-    margin-top: 2.5rem;
-    list-style: none;
-  }
-
-  .awards-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid var(--glass-border);
-    font-size: 0.88rem;
-    color: var(--silver);
-    font-style: italic;
-    font-weight: 300;
-  }
-
-  .awards-list li::before {
-    content: '✦';
-    color: var(--steel);
-    font-style: normal;
-    font-size: 0.5rem;
-    flex-shrink: 0;
-    margin-top: 0.35rem;
-  }
-
-  /* ─── DAGGER DIVIDER ─── */
-  .dagger-divider {
-    position: relative;
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 40px;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    opacity: 0.35;
-  }
-
-  .dagger-divider::before,
-  .dagger-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--silver));
-  }
-
-  .dagger-divider::after {
-    background: linear-gradient(90deg, var(--silver), transparent);
-  }
-
-  .dagger-glyph {
-    font-size: 1.4rem;
-    color: var(--silver);
-    user-select: none;
-    transform: rotate(180deg);
-    display: inline-block;
-  }
-
-  /* ─── SECTION HEADERS ─── */
-  .section-header {
-    margin-bottom: 3rem;
-  }
-
-  .section-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--steel);
-    display: block;
-    margin-bottom: 0.8rem;
-  }
-
-  .section-title {
-    font-family: 'UnifrakturMaguntia', serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    color: var(--cold-white);
-    line-height: 1;
-  }
-
-  /* ─── BLOG SECTION ─── */
-  #blog { padding-bottom: 100px; }
-
-  .blog-card {
-    display: block;
-    border: 1px solid var(--glass-border);
-    padding: 2rem 2.5rem;
-    margin-bottom: 1px;
-    text-decoration: none;
-    background: transparent;
-    transition: background 0.3s ease, border-color 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .blog-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(168,180,200,0.04), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .blog-card:hover {
-    background: var(--dim);
-    border-color: rgba(200,205,214,0.3);
-  }
-
-  .blog-card:hover::before { opacity: 1; }
-
-  .blog-card-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--steel);
-    margin-bottom: 0.6rem;
-    display: block;
-  }
-
-  .blog-card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.25rem;
-    color: var(--cold-white);
-    font-weight: 400;
-    margin-bottom: 0.5rem;
-    font-style: italic;
-  }
-
-  .blog-card-desc {
-    font-size: 0.875rem;
-    color: var(--steel);
-    font-weight: 300;
-    line-height: 1.6;
-  }
-
-  .blog-card-arrow {
-    position: absolute;
-    right: 2.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--steel);
-    opacity: 0;
-    transition: opacity 0.3s ease, right 0.3s ease;
-  }
-
-  .blog-card:hover .blog-card-arrow {
-    opacity: 1;
-    right: 2rem;
-  }
-
-  .blog-cta {
-    margin-top: 2rem;
-    display: inline-block;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--steel);
-    text-decoration: none;
-    border-bottom: 1px solid var(--glass-border);
-    padding-bottom: 2px;
-    transition: color 0.3s, border-color 0.3s;
-  }
-
-  .blog-cta:hover { color: var(--cold-white); border-color: var(--silver); }
-
-  /* ─── PROJECTS ─── */
-  #projects { padding-bottom: 120px; }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 1px;
-    background: var(--glass-border);
-    border: 1px solid var(--glass-border);
-  }
-
-  .project-card {
-    background: var(--ink);
-    padding: 2rem;
-    text-decoration: none;
-    display: block;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s ease;
-  }
-
-  .project-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 2px;
-    height: 0;
-    background: linear-gradient(180deg, var(--silver), transparent);
-    transition: height 0.4s ease;
-  }
-
-  .project-card:hover { background: var(--dim); }
-  .project-card:hover::after { height: 100%; }
-
-  .project-badge {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.5rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--steel);
-    border: 1px solid var(--glass-border);
-    padding: 0.2rem 0.5rem;
-    display: inline-block;
-    margin-bottom: 1rem;
-  }
-
-  .project-title {
-    font-family: 'Cinzel', serif;
-    font-size: 1rem;
-    color: var(--cold-white);
-    font-weight: 600;
-    margin-bottom: 0.7rem;
-    letter-spacing: 0.05em;
-  }
-
-  .project-desc {
-    font-size: 0.85rem;
-    color: var(--steel);
-    line-height: 1.65;
-    font-weight: 300;
-    font-style: italic;
-  }
-
-  .project-tech {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 1.2rem;
-  }
-
-  .tech-dot {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.5rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--circuit);
-    color: #5a6878;
-  }
-
-  .tech-dot + .tech-dot::before {
-    content: ' · ';
-    color: var(--steel);
-    opacity: 0.4;
-  }
-
-  /* ─── EXPERIENCE TIMELINE ─── */
-  .timeline {
-    position: relative;
-    padding-left: 2rem;
-    margin-top: 0.5rem;
-  }
-
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0.6rem; bottom: 0.6rem;
-    width: 1px;
-    background: linear-gradient(180deg, var(--silver), transparent);
-    opacity: 0.25;
-  }
-
-  .timeline-item {
-    position: relative;
-    margin-bottom: 2.5rem;
-  }
-
-  .timeline-item::before {
-    content: '';
-    position: absolute;
-    left: -2rem;
-    top: 0.6rem;
-    width: 5px; height: 5px;
-    border: 1px solid var(--steel);
-    background: var(--ink);
-    transform: rotate(45deg);
-  }
-
-  .timeline-year {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    color: var(--steel);
-    margin-bottom: 0.3rem;
-  }
-
-  .timeline-role {
-    font-family: 'Cinzel', serif;
-    font-size: 0.9rem;
-    color: var(--cold-white);
-    font-weight: 600;
-    letter-spacing: 0.04em;
-  }
-
-  .timeline-org {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.9rem;
-    color: var(--silver);
-    font-style: italic;
-    margin-bottom: 0.5rem;
-  }
-
-  .timeline-desc {
-    font-size: 0.85rem;
-    color: var(--steel);
-    line-height: 1.65;
-    font-weight: 300;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 3rem 2rem 4rem;
-    border-top: 1px solid var(--glass-border);
-  }
-
-  .footer-name {
-    font-family: 'UnifrakturMaguntia', serif;
-    font-size: 1.4rem;
-    color: var(--steel);
-    margin-bottom: 1rem;
-    opacity: 0.5;
-  }
-
-  .footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-
-  .footer-link {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--steel);
-    text-decoration: none;
-    opacity: 0.5;
-    transition: opacity 0.3s;
-  }
-
-  .footer-link:hover { opacity: 1; }
-
-  /* ─── FADE-IN ANIMATION ─── */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 600px) {
-    section { padding: 100px 24px 60px; }
-    .projects-grid { grid-template-columns: 1fr; }
-    nav { gap: 0; }
-    .nav-link { padding: 1.2rem 0.8rem; font-size: 0.58rem; }
-    .nav-wordmark { display: none; }
-    .nav-divider { display: none; }
-    .info-grid { grid-template-columns: 1fr 1fr; }
-    .blog-card { padding: 1.5rem; }
-    .blog-card-arrow { display: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .fade-in { opacity: 1; transform: none; transition: none; }
-    html { scroll-behavior: auto; }
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Romanesco&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <!-- ═══════════════════ NAV ═══════════════════ -->
 <nav>
-  <a href="#about" class="nav-wordmark">Adhella Subalie</a>
+  <a href="" class="nav-wordmark">Adhella Subalie</a>
   <span class="nav-divider">◆</span>
   <a href="#about" class="nav-link">About</a>
   <span class="nav-divider">◆</span>
-  <a href="#blog" class="nav-link">Writing</a>
-  <span class="nav-divider">◆</span>
   <a href="#projects" class="nav-link">Projects</a>
+  <span class="nav-divider">◆</span>
+  <a href="https://thomasineadhella.substack.com" target="_blank" rel="noopener" class="nav-link">Blog↗</a>
 </nav>
 
 <!-- ═══════════════════ ABOUT ═══════════════════ -->
 <section id="about">
-
   <div class="fade-in">
-    <p class="hero-eyebrow"><span></span>iOS Engineer · Mentor · Researcher</p>
-    <h1 class="hero-name">Adhella<br/>Subalie</h1>
+    <p class="hero-eyebrow"><span></span>Hello World! My name is...</p>
+    <h1 class="hero-name">Adhella Subalie</h1>
     <p class="hero-title">
-      Swift &amp; iOS<span class="sep">×</span>Machine Learning<span class="sep">×</span>Apple Developer Academy
+      Swift &amp; iOS<span class="sep">×</span>Tech Education<span class="sep">×</span>Machine Learning
     </p>
     <p class="hero-bio">
-      Building things that should not exist yet — mobile interfaces, language models, and the space between.<br/>
-      Currently shaping the next generation of Apple developers in Bali.
+      iOS Software Engineer and Technology Mentor with 5+ years of professional experience spanning iOS development, technical education, and research in Machine Learning. Currently shaping the next generation of Apple developers at the only international Apple Developer Academy in Indonesia. Proven track record delivering production-grade iOS features at scale (Traveloka), publishing NLP research, and working with cross-functional teams.
     </p>
   </div>
 
-  <div class="fade-in" style="transition-delay:0.15s">
+  <!-- <div class="fade-in" style="transition-delay:0.15s">
     <div class="info-grid">
-      <div class="info-cell">
-        <span class="info-cell-label">Current Role</span>
-        <div class="info-cell-value">Technology Mentor<br/>Apple Developer Academy @BINUS Bali</div>
-      </div>
       <div class="info-cell">
         <span class="info-cell-label">Education</span>
         <div class="info-cell-value">BSc Computer Science – AI<br/>BINUS University · GPA 3.85</div>
@@ -693,104 +51,24 @@
         <div class="info-cell-value">adhellasbl@gmail.com</div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="fade-in" style="transition-delay:0.25s">
-    <div class="skills-row" style="margin-top:2rem">
-      <span class="skill-tag">Swift</span>
-      <span class="skill-tag">SwiftUI</span>
-      <span class="skill-tag">UIKit</span>
-      <span class="skill-tag">Objective-C</span>
-      <span class="skill-tag">Python</span>
-      <span class="skill-tag">Core ML</span>
-      <span class="skill-tag">NLP</span>
-      <span class="skill-tag">iOS Architecture</span>
-      <span class="skill-tag">BERT</span>
-      <span class="skill-tag">Curriculum Design</span>
-    </div>
+    <div id="skills-container"></div>
   </div>
 
   <!-- Experience -->
   <div class="fade-in" style="transition-delay:0.35s; margin-top: 3.5rem;">
     <p class="section-label">Experience</p>
-    <div class="timeline">
-
-      <div class="timeline-item">
-        <p class="timeline-year">2025 — Present</p>
-        <p class="timeline-role">Technology Mentor</p>
-        <p class="timeline-org">Apple Developer Academy @BINUS, Bali</p>
-        <p class="timeline-desc">Mentoring Swift/iOS learners at the only international Apple Developer Academy in Indonesia. Leading program-wide events, contributing to curriculum planning, and integrating ethical AI frameworks into learning materials.</p>
-      </div>
-
-      <div class="timeline-item">
-        <p class="timeline-year">2022 — 2025</p>
-        <p class="timeline-role">Software Engineer – iOS</p>
-        <p class="timeline-org">Traveloka</p>
-        <p class="timeline-desc">Built and maintained scalable consumer-facing features in Swift and Objective-C across Experience, Grocery, and Platform verticals. Authored design documents and conducted code reviews across a large iOS codebase.</p>
-      </div>
-
-      <div class="timeline-item">
-        <p class="timeline-year">2021</p>
-        <p class="timeline-role">Junior iOS Developer</p>
-        <p class="timeline-org">Apple Developer Academy @BINUS</p>
-        <p class="timeline-desc">Selected from 3,584 applicants (5.6% acceptance). Held roles as iOS Engineer, Project Manager, and Technical Lead across five cross-functional project teams.</p>
-      </div>
-
-    </div>
+    <div id="experiences-container"></div>
   </div>
 
   <!-- Accolades -->
   <div class="fade-in" style="transition-delay:0.45s; margin-top: 2.5rem;">
-    <p class="section-label" style="margin-bottom:0.5rem">Honours &amp; Awards</p>
-    <ul class="awards-list">
-      <li>Best Paper Award — MIWAI 2023 · Book Recommendation Using Double-Stack BERT</li>
-      <li>Next Generation Women Leaders APAC — McKinsey &amp; Company, 2023</li>
-      <li>PPA Government Scholarship Awardee — Indonesian Government, 2019</li>
-      <li>2nd Best Exemplary Student — Santa Patricia High School, 2018</li>
-      <li>3rd Place &amp; Top-10 Individual Speaker — English Debate, UNITY @ UMN, 2017</li>
-    </ul>
+    <p class="section-label">Honours &amp; Awards</p>
+    <div id="awardlist-container"></div>
   </div>
 
-</section>
-
-<!-- DAGGER DIVIDER -->
-<div class="dagger-divider"><span class="dagger-glyph">†</span></div>
-
-<!-- ═══════════════════ BLOG ═══════════════════ -->
-<section id="blog">
-  <div class="section-header fade-in">
-    <span class="section-label">Dispatches from the interior</span>
-    <h2 class="section-title">Writing</h2>
-  </div>
-
-  <div class="fade-in" style="transition-delay:0.1s">
-    <a href="https://thomasineadhella.substack.com" target="_blank" rel="noopener" class="blog-card">
-      <span class="blog-card-tag">Essay · Consciousness</span>
-      <p class="blog-card-title">Finding Love in the Parallel Quantum Universe</p>
-      <p class="blog-card-desc">On entanglement, observation, and what it means to be known across distance.</p>
-      <span class="blog-card-arrow">→</span>
-    </a>
-
-    <a href="https://thomasineadhella.substack.com" target="_blank" rel="noopener" class="blog-card">
-      <span class="blog-card-tag">Essay · AI · Identity</span>
-      <p class="blog-card-title">The Ambiguity of Minds</p>
-      <p class="blog-card-desc">Exploring the blurred line where computation ends and something stranger begins.</p>
-      <span class="blog-card-arrow">→</span>
-    </a>
-
-    <a href="https://thomasineadhella.substack.com" target="_blank" rel="noopener" class="blog-card">
-      <span class="blog-card-tag">Reflection · Ethics · Technology</span>
-      <p class="blog-card-title">On Building Things That Think</p>
-      <p class="blog-card-desc">A meditation on moral responsibility in the age of language models, and what Aquinas might say about all of this.</p>
-      <span class="blog-card-arrow">→</span>
-    </a>
-  </div>
-
-  <div class="fade-in" style="transition-delay:0.2s; margin-top:2rem">
-    <a href="https://thomasineadhella.substack.com" target="_blank" rel="noopener" class="blog-cta">
-      All essays on Substack →
-    </a>
-  </div>
 </section>
 
 <!-- DAGGER DIVIDER -->
@@ -802,118 +80,50 @@
     <span class="section-label">Selected Works</span>
     <h2 class="section-title">Projects</h2>
   </div>
-
-  <div class="projects-grid fade-in" style="transition-delay:0.1s">
-
-    <a href="https://beacons.ai/adhellasubalie" target="_blank" rel="noopener" class="project-card">
-      <span class="project-badge">iOS · NLP · Research</span>
-      <p class="project-title">Double-Stack BERT Recommender</p>
-      <p class="project-desc">A novel document-embedding architecture for content-based book recommendation, outperforming five state-of-the-art baselines across three datasets. Best Paper — MIWAI 2023.</p>
-      <div class="project-tech">
-        <span class="tech-dot">Python</span>
-        <span class="tech-dot">BERT</span>
-        <span class="tech-dot">NLP</span>
-        <span class="tech-dot">Transformers</span>
-      </div>
-    </a>
-
-    <a href="https://beacons.ai/adhellasubalie" target="_blank" rel="noopener" class="project-card">
-      <span class="project-badge">iOS · SwiftUI</span>
-      <p class="project-title">Composure Coach</p>
-      <p class="project-desc">An iOS app for practicing composure and assertiveness in confrontational scenarios — built for personal growth, designed for anyone who freezes when it matters.</p>
-      <div class="project-tech">
-        <span class="tech-dot">Swift</span>
-        <span class="tech-dot">SwiftUI</span>
-        <span class="tech-dot">Core Data</span>
-      </div>
-    </a>
-
-    <a href="https://beacons.ai/adhellasubalie" target="_blank" rel="noopener" class="project-card">
-      <span class="project-badge">Hardware · IoT · Edge AI</span>
-      <p class="project-title">Solar Weather Station</p>
-      <p class="project-desc">A solar-powered e-ink weather display built around ESP32, integrating MQTT, Home Assistant, and on-device sensor fusion. An experiment in low-power ambient computing.</p>
-      <div class="project-tech">
-        <span class="tech-dot">ESP32</span>
-        <span class="tech-dot">MQTT</span>
-        <span class="tech-dot">Python</span>
-        <span class="tech-dot">Home Assistant</span>
-      </div>
-    </a>
-
-    <a href="https://beacons.ai/adhellasubalie" target="_blank" rel="noopener" class="project-card">
-      <span class="project-badge">Education · Curriculum</span>
-      <p class="project-title">Ethical AI Curriculum</p>
-      <p class="project-desc">Designed and delivered a module on AI ethics for iOS learners at the Apple Developer Academy, drawing on Thomistic philosophy and practical case studies from modern ML systems.</p>
-      <div class="project-tech">
-        <span class="tech-dot">Curriculum Design</span>
-        <span class="tech-dot">AI Ethics</span>
-        <span class="tech-dot">Facilitation</span>
-      </div>
-    </a>
-
-    <a href="https://beacons.ai/adhellasubalie" target="_blank" rel="noopener" class="project-card">
-      <span class="project-badge">Traveloka · iOS</span>
-      <p class="project-title">Consumer Features at Scale</p>
-      <p class="project-desc">Production iOS engineering across three product verticals (Experience, Grocery, Platform) serving millions of users — delivering features from design document to App Store.</p>
-      <div class="project-tech">
-        <span class="tech-dot">Swift</span>
-        <span class="tech-dot">Objective-C</span>
-        <span class="tech-dot">UIKit</span>
-      </div>
-    </a>
-
-    <a href="https://beacons.ai/adhellasubalie" target="_blank" rel="noopener" class="project-card">
-      <span class="project-badge">View All</span>
-      <p class="project-title">More at Beacons</p>
-      <p class="project-desc">The full catalogue of projects, publications, and collaborations — including mentoring work, capstone advising, and experimental side builds.</p>
-      <div class="project-tech">
-        <span class="tech-dot">beacons.ai/adhellasubalie</span>
-      </div>
-    </a>
-
-  </div>
+  <!-- <div id="projectgrid-container"></div> -->
+  <project-grid></project-grid>
+ 
 </section>
+
+<!-- DAGGER DIVIDER -->
+<!-- <div class="dagger-divider"><span class="dagger-glyph">†</span></div> -->
+
+<!-- ═══════════════════ BLOG ═══════════════════ -->
+<!-- <section id="blog">
+  <div class="section-header fade-in">
+    <span class="section-label">Dispatches from the interior</span>
+    <h2 class="section-title">Writings</h2>
+  </div>
+
+  <div class="fade-in" style="transition-delay:0.1s">
+    <a href="https://thomasineadhella.substack.com" target="_blank" rel="noopener" class="blog-card">
+      <span class="blog-card-tag">Essay · Consciousness</span>
+      <p class="blog-card-title">Finding Love in the Parallel Quantum Universe</p>
+      <p class="blog-card-desc">On entanglement, observation, and what it means to be known across distance.</p>
+      <span class="blog-card-arrow">→</span>
+    </a>
+
+  <div class="fade-in" style="transition-delay:0.2s; margin-top:2rem">
+    <a href="https://thomasineadhella.substack.com" target="_blank" rel="noopener" class="blog-cta">
+      All essays on Substack →
+    </a>
+  </div>
+</section> -->
 
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer>
-  <p class="footer-name">Adhella Subalie</p>
+  <p class="footer-name">Contact Adhella</p>
   <div class="footer-links">
     <a href="mailto:adhellasbl@gmail.com" class="footer-link">Email</a>
-    <a href="https://thomasineadhella.substack.com" target="_blank" rel="noopener" class="footer-link">Substack</a>
-    <a href="https://beacons.ai/adhellasubalie" target="_blank" rel="noopener" class="footer-link">Beacons</a>
+    <a href="https://www.linkedin.com/in/adhella-subalie/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+    <a href="https://github.com/adhxll/" target="_blank" rel="noopener" class="footer-link">Github</a>
+    <a href="https://www.goodreads.com/user/show/129559298-adhella-subalie" target="_blank" rel="noopener" class="footer-link">Goodreads</a>
   </div>
+  <br>
+  <div class="project-desc">P/s: Made this portfolio website using Claude and then I customize it a lot. Currently learning how to vibe-code more efficiently, that's an important skill now</div>
 </footer>
+<script src="data.js"></script>
+<script src="script.js"></script>
 
-<script>
-  // Intersection Observer for fade-ins
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-  // Nav active state on scroll
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  const scrollObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        navLinks.forEach(link => {
-          link.style.color = link.getAttribute('href') === `#${id}` 
-            ? 'var(--cold-white)' 
-            : '';
-        });
-      }
-    });
-  }, { threshold: 0.4 });
-
-  sections.forEach(s => scrollObserver.observe(s));
-</script>
 </body>
 </html>
