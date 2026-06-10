@@ -52,7 +52,7 @@ const myProjects = [
         "A novel document-embedding architecture for content-based book recommendation, outperforming five state-of-the-art baselines across three datasets. Awarded Best Paper — MIWAI 2023.",
         ["NLP Research","Python", "Transformer architecture", "Hugging Face", "Recommendation System"]),
     new Project(
-        "https://testflight.apple.com/join/AejS5tuc",
+        "https://github.com/adhxll/Pollo",
         "2021",
         "Polo: The Ear Training Game",
         "A team game project about training your ear for musical endeavors",
