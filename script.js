@@ -115,6 +115,14 @@ function render() {
   sections.forEach(s => scrollObserver.observe(s));
 
 
+  const bioWrap = document.getElementById('hero-bio-wrap');
+  const bioToggle = document.getElementById('hero-bio-toggle');
+  bioToggle.addEventListener('click', () => {
+    const expanded = bioWrap.classList.toggle('expanded');
+    bioToggle.textContent = expanded ? 'Read less ↑' : 'Read more ↓';
+    bioToggle.setAttribute('aria-expanded', expanded);
+  });
+
   document.getElementById('skills-container').innerHTML = SkillsRow(mySkills);
   document.getElementById('experiences-container').innerHTML = TimelineView(myExperiences);
   document.getElementById('awardlist-container').innerHTML = AwardListView(myAwards);
